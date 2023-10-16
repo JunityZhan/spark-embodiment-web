@@ -80,7 +80,7 @@ export function CreateAvatar() {
         };
 
         try {
-            const response = await fetch('http://localhost:5328/api/submit', {
+            const response = await fetch('/api/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)  // 提交所有的状态数据
