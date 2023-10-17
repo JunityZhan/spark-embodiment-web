@@ -98,6 +98,7 @@ export function CreateAvatar() {
 
 
     useEffect(() => {
+        // 使用模拟数据
         const mockData = [
             {
                 question: "你平时的周末是怎么度过的？",
@@ -125,6 +126,18 @@ export function CreateAvatar() {
             }
         ];
         setQuestions(mockData);
+
+        // 当你准备使用真实数据时，只需解除以下代码的注释
+        /*
+        fetch('https://your-backend-endpoint/questions')
+            .then(response => response.json())
+            .then(data => {
+                setQuestions(data);
+            })
+            .catch(error => {
+                console.error('Error fetching questions:', error);
+            });
+        */
     }, []);
     return (
         <div className="container mx-auto mt-10 p-5 border rounded-xl">
