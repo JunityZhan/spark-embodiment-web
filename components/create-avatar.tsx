@@ -48,12 +48,12 @@ export function CreateAvatar() {
         "体育", "steam", "电竞", "电影", "绘画"
     ];
 
-    const [selectedYear, setSelectedYear] = useState<string>('year');
-    const [selectedMonth, setSelectedMonth] = useState<string>('month');
-    const [selectedDay, setSelectedDay] = useState<string>('day');
-    const [selectedZodiac, setSelectedZodiac] = useState<string>('Select Option');
-    const [selectedGender, setSelectedGender] = useState<string>('Select Option');
-    const [selectedOccupation, setSelectedOccupation] = useState<string>('Select Option');
+    const [selectedYear, setSelectedYear] = useState<string>('2000');
+    const [selectedMonth, setSelectedMonth] = useState<string>('12');
+    const [selectedDay, setSelectedDay] = useState<string>('17');
+    const [selectedZodiac, setSelectedZodiac] = useState<string>('射手座');
+    const [selectedGender, setSelectedGender] = useState<string>('男');
+    const [selectedOccupation, setSelectedOccupation] = useState<string>('学生');
     const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
     const [questions, setQuestions] = useState<QuestionType[]>([]);
     const [answers, setAnswer] = useState<string[]>([]);
@@ -171,7 +171,7 @@ export function CreateAvatar() {
                         <DropdownMenu>
                             <DropdownMenuTrigger className="w-1/5">
                                 <Badge className="w-full flex justify-center items-center text-white text-xl bg-transparent border border-gray-500 border-opacity-50">
-                                    {selectedMonth}
+                                    {selectedMonth}月
                                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                                 </Badge>
                             </DropdownMenuTrigger>
@@ -187,14 +187,14 @@ export function CreateAvatar() {
                         <DropdownMenu>
                             <DropdownMenuTrigger className="w-1/5">
                                 <Badge className="w-full flex justify-center items-center text-white text-xl bg-transparent border border-gray-500 border-opacity-50">
-                                    {selectedDay}
+                                    {selectedDay}号
                                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                                 </Badge>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="max-h-[300px] overflow-y-auto">
                                 {Array.from({ length: 31 }).map((_, idx) => (
                                     <DropdownMenuItem key={idx} onSelect={() => setSelectedDay((idx + 1).toString())}>
-                                        {idx + 1}日
+                                        {idx + 1}号
                                     </DropdownMenuItem>
                                 ))}
                             </DropdownMenuContent>
@@ -286,7 +286,9 @@ export function CreateAvatar() {
                         <DropdownMenu>
                             <DropdownMenuTrigger className="mt-2 p-2 border border-gray-500 border-opacity-50 rounded-md flex justify-between items-center">
                                 Select Interests
-                                {/* ... SVG ... */}
+                                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="max-h-[300px] overflow-y-auto">
                                 {interests.map((interest, idx) => (
@@ -303,7 +305,11 @@ export function CreateAvatar() {
                     </Label>
                     <Separator></Separator>
                     <Label>
-                        灵魂问题:
+                        <div className="flex justify-center">
+                            <h1 className="mb-2 text-lg font-semibold">
+                                灵魂问题
+                            </h1>
+                        </div>
                         <div className="flex justify-between flex-wrap">
                             {questions.length > 0 && (
                                 questions.map((q, qIndex) => (
@@ -332,9 +338,10 @@ export function CreateAvatar() {
                                 ))
                             )}
                         </div>
-
                     </Label>
-                    <Button type="submit">提交</Button>
+                    <div className="flex justify-end items-end">
+                        <Button type="submit">提交</Button>
+                    </div>
                 </form>
         </div>
     )
