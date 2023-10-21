@@ -16,7 +16,7 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
@@ -34,18 +34,88 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   )
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW)
   const [previewTokenInput, setPreviewTokenInput] = useState(previewToken ?? '')
-  const { messages, append, reload, stop, isLoading, input, setInput } =
+  const { messages, append, reload, stop, isLoading, input, setInput, setMessages } =
     useChat({
       initialMessages,
       id,
+      api: '/python/api/chat',
       body: {
         id,
         previewToken
       },
       onResponse(response) {
+
         if (response.status === 401) {
           toast.error(response.statusText)
         }
+        if (response.status === 403) {
+            fetch('/python/api/conclude', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // 传递messages过去
+                body: JSON.stringify({ messages })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(data => {
+                const newMessage : Message = {
+                    id: id || new Date().toISOString(), // 使用时间戳作为唯一ID
+                    role: 'system', // 或者 'assistant'
+                    content: data.content
+                };
+                setMessages([...messages, newMessage]);
+            })
+        }
+
+        // 从/python/api/chat2获取数据
+      },
+      onFinish(message) {
+          fetch('/python/api/chat2', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ message })
+          })
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                  console.log(data)
+                  append({
+                      content: data.content,
+                      role: 'user'
+                  });
+              })
+              .catch(error => {
+                  fetch('/python/api/conclude', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      // 传递messages过去
+                      body: JSON.stringify({ messages })
+                  }).then(response => {
+                      if (!response.ok) {
+                          throw new Error('Network response was not ok');
+                      }
+                      return response.json();
+                  }).then(data => {
+                      const newMessage : Message = {
+                          id: id || new Date().toISOString(), // 使用时间戳作为唯一ID
+                          role: 'system', // 或者 'assistant'
+                          content: data.content
+                      };
+                      setMessages([...messages, newMessage]);
+                  })
+              });
       }
     })
   return (

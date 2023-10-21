@@ -63,5 +63,6 @@ export async function POST(req: Request) {
     }
   })
 
-  return new StreamingTextResponse(stream)
+  // return new StreamingTextResponse(stream)
+    return new Response('ok')
 }

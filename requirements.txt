@@ -1,2 +1,4 @@
 flask
 Flask-CORS
+chatharuhi
+chromadb
